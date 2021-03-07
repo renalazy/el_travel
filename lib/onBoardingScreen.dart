@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:eltravel/homeScreen.dart';
 import 'package:eltravel/loginScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -158,8 +157,8 @@ class CustomDialog extends StatelessWidget {
                   child: Text(
                     'Get Started',
                     style: TextStyle(
-                        fontFamily: 'MontserratAlternates',
-                        color: Colors.white,
+                      fontFamily: 'MontserratAlternates',
+                      color: Colors.white,
                     ),
                   ),
                 ),
