@@ -1,5 +1,6 @@
 import 'package:eltravel/Animation/FadeAnimation.dart';
 import 'package:eltravel/homeScreen.dart';
+import 'package:eltravel/registerScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -19,6 +20,7 @@ class LoginScreen extends StatelessWidget {
       home: LoginPage(),
       routes: {
         '/homescreen': (_) => new HomeScreen(),
+        '/registerscreen': (_) => new RegisterScreen(),
       },
     );
   }
@@ -187,12 +189,17 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       FadeAnimation(
                           1.5,
-                          Text(
-                            "Register",
-                            style: TextStyle(
-                                fontFamily: 'MontserratAlternates',
-                                color: Color.fromRGBO(143, 148, 251, 1),
-                            decoration: TextDecoration.underline),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushReplacementNamed(context, '/registerscreen');
+                            },
+                            child: Text(
+                              "Register",
+                              style: TextStyle(
+                                  fontFamily: 'MontserratAlternates',
+                                  color: Color.fromRGBO(143, 148, 251, 1),
+                                  decoration: TextDecoration.underline),
+                            ),
                           )),
                       SizedBox(
                         height: 70,
