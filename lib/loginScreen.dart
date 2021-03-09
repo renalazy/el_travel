@@ -1,8 +1,10 @@
 import 'package:eltravel/Animation/FadeAnimation.dart';
+import 'package:eltravel/forgotPasswordScreen.dart';
 import 'package:eltravel/homeScreen.dart';
 import 'package:eltravel/registerScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:eltravel/CustomDialog.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +23,7 @@ class LoginScreen extends StatelessWidget {
       routes: {
         '/homescreen': (_) => new HomeScreen(),
         '/registerscreen': (_) => new RegisterScreen(),
+        '/forgotpasswordscreen': (_) => new ForgotPasswordScreen(),
       },
     );
   }
@@ -191,7 +194,8 @@ class _LoginPageState extends State<LoginPage> {
                           1.5,
                           GestureDetector(
                             onTap: () {
-                              Navigator.pushReplacementNamed(context, '/registerscreen');
+                              Navigator.pushNamed(
+                                  context, '/registerscreen');
                             },
                             child: Text(
                               "Register",
@@ -206,11 +210,18 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       FadeAnimation(
                           1.5,
-                          Text(
-                            "Forgot Password?",
-                            style: TextStyle(
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, '/forgotpasswordscreen');
+                            },
+                            child: Text(
+                              "Forgot Password",
+                              style: TextStyle(
                                 fontFamily: 'MontserratAlternates',
-                                color: Color.fromRGBO(143, 148, 251, 1)),
+                                color: Color.fromRGBO(143, 148, 251, 1),
+                              ),
+                            ),
                           )),
                     ],
                   ),
