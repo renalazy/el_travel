@@ -3,8 +3,14 @@ import 'package:flutter/material.dart';
 class CustomDialog extends StatelessWidget {
   final String title, description, buttonText;
   final AssetImage image;
+  final Container container;
 
-  CustomDialog({this.title, this.description, this.buttonText, this.image});
+  CustomDialog(
+      {this.title,
+      this.description,
+      this.buttonText,
+      this.image,
+      this.container});
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -40,12 +46,15 @@ class CustomDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(height: 60),
-              Text(
-                title,
-                style: TextStyle(
-                  fontFamily: 'MontserratAlternates',
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold,
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontFamily: 'MontserratAlternates',
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               SizedBox(height: 24.0),
@@ -54,6 +63,8 @@ class CustomDialog extends StatelessWidget {
                 style: TextStyle(
                     fontFamily: 'MontserratAlternates', fontSize: 16.0),
               ),
+              SizedBox(height: 24.0),
+              container,
               SizedBox(height: 24.0),
               Align(
                 alignment: Alignment.bottomRight,
@@ -81,7 +92,7 @@ class CustomDialog extends StatelessWidget {
           left: 16,
           right: 16,
           child: CircleAvatar(
-            backgroundColor: Colors.blueAccent,
+            backgroundColor: Color(0xff6C63FF),
             radius: 85,
             backgroundImage: image,
           ),
