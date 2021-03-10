@@ -47,6 +47,10 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
               description: 'Lets Travel the World With Us !',
           image: AssetImage('images/hello.gif'),
           buttonText: 'Get Started',
+          container: Container(
+            height: 0,
+            width: 0,
+          ),
             ));
   }
 
