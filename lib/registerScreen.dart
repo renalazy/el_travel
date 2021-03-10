@@ -133,7 +133,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   child: TextField(
                                     decoration: InputDecoration(
                                         border: InputBorder.none,
-                                        hintText: "Email or Phone number",
+                                        hintText: "Email adaress",
                                         hintStyle: TextStyle(
                                             fontFamily: 'MontserratAlternates',
                                             color: Colors.grey[400])),
@@ -207,7 +207,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           1.5,
                           GestureDetector(
                             onTap: () {
-                              Navigator.pushReplacementNamed(context, '/loginscreen');
+                              Navigator.pushNamedAndRemoveUntil(context, '/loginscreen', (Route<dynamic> route) => true);
                             },
                             child: Text(
                               "Already have an account?",
