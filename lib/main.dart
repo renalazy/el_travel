@@ -66,7 +66,7 @@ class _SplashScreenState extends State<SplashScreen> {
             width: 300.0,
           ),
           SizedBox(
-            height: 100.0,
+            height: 20.0,
           ),
           SpinKitFoldingCube(
             color: Color(0xff333652),
