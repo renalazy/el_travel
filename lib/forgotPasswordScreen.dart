@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:eltravel/Animation/FadeAnimation.dart';
+import 'package:eltravel/CustomDialog.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,6 +27,21 @@ class ForgotPasswordPage extends StatefulWidget {
 }
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
+  void _showAlert(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) => CustomDialog(
+              title: 'Welcome',
+              description: 'Lets Travel the World With Us !',
+              image: AssetImage('images/hello.gif'),
+              buttonText: 'Get Started',
+              container: Container(
+                height: 0,
+                width: 0,
+              ),
+            ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,7 +116,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(top: 10, left: 30, right: 30, bottom: 30),
+                padding:
+                    EdgeInsets.only(top: 10, left: 30, right: 30, bottom: 30),
                 child: Column(
                   children: <Widget>[
                     FadeAnimation(
@@ -108,7 +125,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       Text(
                         'Forgot Your Password? \nNo worries! Enter your email and we will send you a code.',
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontFamily: 'MontserratAlternates', color: Colors.black26),
+                        style: TextStyle(
+                            fontFamily: 'MontserratAlternates',
+                            color: Colors.black26),
                       ),
                     ),
                     SizedBox(height: 20),
@@ -150,31 +169,29 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       height: 30,
                     ),
                     FadeAnimation(
-                        2,
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pushReplacementNamed(
-                                context, '/homescreen');
-                          },
-                          child: Container(
-                            height: 50,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                gradient: LinearGradient(colors: [
-                                  Color.fromRGBO(143, 148, 251, 1),
-                                  Color.fromRGBO(143, 148, 251, .6),
-                                ])),
-                            child: Center(
-                              child: Text(
-                                "SEND CODE",
-                                style: TextStyle(
-                                    fontFamily: 'MontserratAlternates',
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              ),
+                      2,
+                      GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              gradient: LinearGradient(colors: [
+                                Color.fromRGBO(143, 148, 251, 1),
+                                Color.fromRGBO(143, 148, 251, .6),
+                              ])),
+                          child: Center(
+                            child: Text(
+                              "SEND CODE",
+                              style: TextStyle(
+                                  fontFamily: 'MontserratAlternates',
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ),
-                        ),),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               )
