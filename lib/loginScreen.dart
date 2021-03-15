@@ -1,10 +1,11 @@
 import 'package:eltravel/Animation/FadeAnimation.dart';
+import 'package:eltravel/RaisedGradientButton.dart';
 import 'package:eltravel/forgotPasswordScreen.dart';
 import 'package:eltravel/homeScreen.dart';
 import 'package:eltravel/registerScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:eltravel/CustomDialog.dart';
+import 'package:eltravel/CustomTextField.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,6 +36,55 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool _autoValidate = false;
+  String _email;
+  String _password;
+
+  String emailValidator(String value) {
+    Pattern pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regex = new RegExp(pattern);
+    if (value.isEmpty) return '*Required';
+    if (!regex.hasMatch(value))
+      return '*Enter a valid email';
+    else
+      return null;
+  }
+
+  Widget filledButton(String text, void function()) {
+    return RaisedGradientButton(
+      child: Center(
+        child: Text(
+          "LOGIN",
+          style: TextStyle(
+              fontFamily: 'MontserratAlternates',
+              color: Colors.white,
+              fontWeight: FontWeight.bold),
+        ),
+      ),
+      gradient: LinearGradient(colors: [
+        Color.fromRGBO(143, 148, 251, 1),
+        Color.fromRGBO(143, 148, 251, .6),
+      ]),
+      onPressed: () {
+        function();
+      },
+    );
+  }
+
+  void _validateLoginInput() {
+    final FormState form = _formKey.currentState;
+    if (_formKey.currentState.validate()) {
+      form.save();
+      Navigator.pushReplacementNamed(context, '/homescreen');
+    } else {
+      setState(() {
+        _autoValidate = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,80 +163,50 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     children: <Widget>[
                       FadeAnimation(
-                          1.8,
-                          Container(
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10),
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Color.fromRGBO(143, 148, 251, .2),
-                                      blurRadius: 20.0,
-                                      offset: Offset(0, 10))
-                                ]),
+                        1.8,
+                        Container(
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Color.fromRGBO(143, 148, 251, .2),
+                                    blurRadius: 20.0,
+                                    offset: Offset(0, 10))
+                              ]),
+                          child: Form(
+                            key: _formKey,
+                            autovalidate: _autoValidate,
                             child: Column(
-                              children: <Widget>[
-                                Container(
-                                  padding: EdgeInsets.all(8.0),
-                                  decoration: BoxDecoration(
-                                      border: Border(
-                                          bottom: BorderSide(
-                                              color: Colors.grey[100]))),
-                                  child: TextField(
-                                    decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: "Email or Phone number",
-                                        hintStyle: TextStyle(
-                                            fontFamily: 'MontserratAlternates',
-                                            color: Colors.grey[400])),
-                                    keyboardType: TextInputType.emailAddress,
-                                  ),
+                              children: [
+                                CustomTextField(
+                                  onSaved: (input) {
+                                    _email = input;
+                                  },
+                                  validator: emailValidator,
+                                  hint: "Email Address",
                                 ),
-                                Container(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: TextField(
-                                    decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: "Password",
-                                        hintStyle: TextStyle(
-                                            fontFamily: 'MontserratAlternates',
-                                            color: Colors.grey[400])),
-                                    obscureText: true,
-                                  ),
-                                )
+                                CustomTextField(
+                                  obsecure: true,
+                                  onSaved: (input) => _password = input,
+                                  validator: (input) =>
+                                      input.isEmpty ? "*Required" : null,
+                                  hint: "Password",
+                                ),
                               ],
                             ),
-                          )),
+                          ),
+                        ),
+                      ),
                       SizedBox(
                         height: 30,
                       ),
                       FadeAnimation(
                           2,
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pushReplacementNamed(
-                                  context, '/homescreen');
-                            },
-                            child: Container(
-                              height: 50,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  gradient: LinearGradient(colors: [
-                                    Color.fromRGBO(143, 148, 251, 1),
-                                    Color.fromRGBO(143, 148, 251, .6),
-                                  ])),
-                              child: Center(
-                                child: Text(
-                                  "LOGIN",
-                                  style: TextStyle(
-                                      fontFamily: 'MontserratAlternates',
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                          )),
+                          filledButton("LOGIN", () {
+                            _validateLoginInput();
+                          })),
                       SizedBox(
                         height: 20,
                       ),
@@ -194,8 +214,7 @@ class _LoginPageState extends State<LoginPage> {
                           1.5,
                           GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(
-                                  context, '/registerscreen');
+                              Navigator.pushNamed(context, '/registerscreen');
                             },
                             child: Text(
                               "Register",
