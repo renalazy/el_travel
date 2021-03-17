@@ -3,6 +3,9 @@ import 'package:eltravel/homeScreen.dart';
 import 'package:eltravel/loginScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:eltravel/CustomTextField.dart';
+import 'package:eltravel/RaisedGradientButton.dart';
+import 'package:eltravel/EmailValidator.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +35,44 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool _autoValidate = false;
+  String _email;
+  TextEditingController _password = TextEditingController();
+  TextEditingController _confirmPassword = TextEditingController();
+
+  Widget filledButton(String text, void function()) {
+    return RaisedGradientButton(
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+              fontFamily: 'MontserratAlternates',
+              color: Colors.white,
+              fontWeight: FontWeight.bold),
+        ),
+      ),
+      gradient: LinearGradient(colors: [
+        Color.fromRGBO(143, 148, 251, 1),
+        Color.fromRGBO(143, 148, 251, .6),
+      ]),
+      onPressed: () {
+        function();
+      },
+    );
+  }
+
+  Future<void> _validateRegisterInput() async {
+    final FormState form = _formKey.currentState;
+    if (_formKey.currentState.validate()) {
+      form.save();
+    } else {
+      setState(() {
+        _autoValidate = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,96 +151,63 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: Column(
                     children: <Widget>[
                       FadeAnimation(
-                          1.8,
-                          Container(
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10),
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Color.fromRGBO(143, 148, 251, .2),
-                                      blurRadius: 20.0,
-                                      offset: Offset(0, 10))
-                                ]),
+                        1.8,
+                        Container(
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Color.fromRGBO(143, 148, 251, .2),
+                                    blurRadius: 20.0,
+                                    offset: Offset(0, 10))
+                              ]),
+                          child: Form(
+                            key: _formKey,
+                            autovalidate: _autoValidate,
                             child: Column(
-                              children: <Widget>[
-                                Container(
-                                  padding: EdgeInsets.all(8.0),
-                                  decoration: BoxDecoration(
-                                      border: Border(
-                                          bottom: BorderSide(
-                                              color: Colors.grey[100]))),
-                                  child: TextField(
-                                    decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: "Email adaress",
-                                        hintStyle: TextStyle(
-                                            fontFamily: 'MontserratAlternates',
-                                            color: Colors.grey[400])),
-                                    keyboardType: TextInputType.emailAddress,
-                                  ),
+                              children: [
+                                CustomTextField(
+                                  onSaved: (input) {
+                                    _email = input;
+                                  },
+                                  validator: emailValidator,
+                                  hint: "Email Address",
                                 ),
-                                Container(
-                                  padding: EdgeInsets.all(8.0),
-                                  decoration: BoxDecoration(
-                                      border: Border(
-                                          bottom: BorderSide(
-                                              color: Colors.grey[100]))),
-                                  child: TextField(
-                                    decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: "Password",
-                                        hintStyle: TextStyle(
-                                            fontFamily: 'MontserratAlternates',
-                                            color: Colors.grey[400])),
-                                    obscureText: true,
-                                  ),
+                                CustomTextField(
+                                  obsecure: true,
+                                  onSaved: (input) => _password.text = input,
+                                  validator: (input) =>
+                                      input.isEmpty ? "*Required" : null,
+                                  hint: "Password",
                                 ),
-                                Container(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: TextField(
-                                    decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: "Confirm Password",
-                                        hintStyle: TextStyle(
-                                            fontFamily: 'MontserratAlternates',
-                                            color: Colors.grey[400])),
-                                    obscureText: true,
-                                  ),
+                                CustomTextField(
+                                  obsecure: true,
+                                  onSaved: (input) =>
+                                      _confirmPassword.text = input,
+                                  validator: (input) {
+                                    if (input.isEmpty) return "*Required";
+                                    if (input != _password.text)
+                                      return "Not Match";
+                                    return null;
+                                  },
+                                  hint: "Confirm Password",
                                 ),
                               ],
                             ),
-                          )),
+                          ),
+                        ),
+                      ),
                       SizedBox(
                         height: 30,
                       ),
                       FadeAnimation(
-                          2,
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pushReplacementNamed(
-                                  context, '/homescreen');
-                            },
-                            child: Container(
-                              height: 50,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  gradient: LinearGradient(colors: [
-                                    Color.fromRGBO(143, 148, 251, 1),
-                                    Color.fromRGBO(143, 148, 251, .6),
-                                  ])),
-                              child: Center(
-                                child: Text(
-                                  "REGISTER",
-                                  style: TextStyle(
-                                      fontFamily: 'MontserratAlternates',
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                          )),
+                        2,
+                        filledButton("REGISTER", () {
+                          _validateRegisterInput();
+                        }),
+                      ),
                       SizedBox(
                         height: 20,
                       ),
@@ -207,7 +215,10 @@ class _RegisterPageState extends State<RegisterPage> {
                           1.5,
                           GestureDetector(
                             onTap: () {
-                              Navigator.pushNamedAndRemoveUntil(context, '/loginscreen', (Route<dynamic> route) => true);
+                              Navigator.pushNamedAndRemoveUntil(
+                                  context,
+                                  '/loginscreen',
+                                  (Route<dynamic> route) => true);
                             },
                             child: Text(
                               "Already have an account?",
