@@ -191,7 +191,7 @@ class _LoginPageState extends State<LoginPage> {
                                   obsecure: true,
                                   onSaved: (input) => _password = input,
                                   validator: (input) =>
-                                      input.isEmpty ? "*Required" : null,
+                                  input.isEmpty ? "*Required" : null,
                                   hint: "Password",
                                 ),
                               ],
